@@ -1,37 +1,18 @@
-const fs = require('fs');
+const read = require('./read.js');
+const create = require('./create.js');
+const remove = require('./delete.js');
+const update = require('./update.js')
 const data = require('./data.json');
 const command = process.argv[2];
 const string = process.argv[3];
 const newString = process.argv[4];
 
 if (command === 'read') {
-  for(let key in data.notes) {
-    console.log(`${key}: ${data.notes[key]}`);
-  }
+  read(data);
 } else if (command === 'create') {
-  data.notes[data.nextId] = string;
-  data.nextId++;
-  fs.writeFile('data.json', JSON.stringify(data, null, 2), 'utf8', err => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  })
+  create(data, string);
 } else if (command === 'delete') {
-  delete data.notes[string];
-  data.nextId--;
-  fs.writeFile('data.json', JSON.stringify(data, null, 2), 'utf8', err => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  })
+  remove(data, string);
 } else if (command === 'update') {
-  data.notes[string] = newString;
-  fs.writeFile('data.json', JSON.stringify(data, null, 2), 'utf8', err => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  })
+  update(data, string, newString);
 }

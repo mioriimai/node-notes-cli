@@ -1,6 +1,3 @@
-//node app.js read
-
-
 const fs = require('fs');
 const data = require('./data.json');
 const command = process.argv[2];
@@ -11,18 +8,12 @@ if (command === 'read') {
     console.log(`${key}: ${data.notes[key]}`);
   }
 } else if (command === 'create') {
-  fs.readFile('data.json', 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    });
-  fs.writeFile('data.json', string, 'utf8', err => {
+  data.notes[data.nextId] = string;
+  data.nextId++;
+  fs.writeFile('data.json', JSON.stringify(data, null, 2), 'utf8', err => {
     if (err) {
       console.error(err);
       process.exit(1);
     }
-    data.notes.nextId = string;
-    data.nextId++;
   })
-
 }
